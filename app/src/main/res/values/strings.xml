@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">SMO</string>
+    <string name="count_sources">Count sources</string>
+    <string name="count_devices">Count devices</string>
+    <string name="count_requests">Count requests</string>
+    <string name="buffer_capacity">Buffer capacity</string>
+    <string name="lambda">lambda</string>
+    <string name="alpha">alpha</string>
+    <string name="beta">beta</string>
+    <string name="step">Step</string>
+    <string name="start">Start</string>
+    <string name="name">Имя</string>
+    <string name="status">Статус</string>
+    <string name="busy">Занят</string>
+    <string name="waiting">Ожидает</string>
+    <string name="count_processed_requests">Кол-во обработанных заявок</string>
+    <string name="count_generated_requests">Кол-во заявок</string>
+    <string name="count_refused_requests">Кол-во отказов</string>
+    <string name="count_sources_result">Кол-во источников = %d</string>
+    <string name="count_devices_result">Кол-во приборов = %d</string>
+    <string name="buffer_capacity_result">Размер буфера = %d</string>
+    <string name="probability_refusal_result">Вероятность отказа = %1$.1f%%</string>
+    <string name="load_factor_result">Загруженность = %1$.1f%%</string>
+    <string name="time_in_system_result">Время в системе = %1$.1f с</string>
+    <string name="lambda_result">lambda = %1$.4f</string>
+    <string name="alpha_result">alpha = %1$.4f</string>
+    <string name="beta_result">beta = %1$.4f</string>
+    <string name="source_by_number">И%d</string>
+    <string name="device_by_number">П%d</string>
+    <string name="koef_use">Коэффициент использования</string>
+    <string name="float_3_digits_after_dot">%1$.3f</string>
+</resources>
