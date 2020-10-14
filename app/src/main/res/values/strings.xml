@@ -7,8 +7,9 @@
     <string name="lambda">lambda</string>
     <string name="alpha">alpha</string>
     <string name="beta">beta</string>
-    <string name="step">Step</string>
+    <string name="deltaT">first Δt</string>
     <string name="start">Start</string>
+    <string name="next">Next</string>
     <string name="name">Имя</string>
     <string name="status">Статус</string>
     <string name="busy">Занят</string>

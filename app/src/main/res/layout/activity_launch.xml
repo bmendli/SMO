@@ -78,12 +78,12 @@
         app:layout_constraintTop_toBottomOf="@id/alpha" />
 
     <EditText
-        android:id="@+id/step"
+        android:id="@+id/deltaT"
         style="@style/TextDefault"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
-        android:hint="@string/step"
+        android:hint="@string/deltaT"
         android:inputType="numberDecimal"
         app:layout_constraintTop_toBottomOf="@id/beta" />
 
@@ -94,7 +94,7 @@
         android:layout_marginBottom="40dp"
         android:background="@color/colorAccent"
         android:padding="8dp"
-        android:text="@string/start"
+        android:text="@string/next"
         android:textColor="@color/black"
         android:textSize="40sp"
         app:layout_constraintBottom_toBottomOf="parent"

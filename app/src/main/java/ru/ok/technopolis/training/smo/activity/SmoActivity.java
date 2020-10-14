@@ -27,7 +27,7 @@ public class SmoActivity extends AppCompatActivity {
     public static final String LAMBDA_EXTRA = "lambda";
     public static final String ALPHA_EXTRA = "alpha_sources";
     public static final String BETA_EXTRA = "beta_sources";
-    public static final String STEP_EXTRA = "step";
+    public static final String DELTA_T_EXTRA = "deltaT";
 
     private DeviceKoefAdapter deviceKoefAdapter;
 
@@ -44,9 +44,20 @@ public class SmoActivity extends AppCompatActivity {
     private TextView probabilityRefusalTextView;
     private TextView loadFactorTextView;
     private TextView timeInSystemTextView;
+    private TextView startTextView;
 
     private View dividerSecond;
     private View dividerThird;
+
+    Controller controller;
+    int countSources;
+    int countDevices;
+    int countRequests;
+    int bufferCapacity;
+    float lambda;
+    float alpha;
+    float beta;
+    long deltaT;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +77,11 @@ public class SmoActivity extends AppCompatActivity {
         probabilityRefusalTextView = findViewById(R.id.probability_refusal);
         loadFactorTextView = findViewById(R.id.load_factor);
         timeInSystemTextView = findViewById(R.id.time_in_system);
+        startTextView = findViewById(R.id.start_tv);
+        startTextView.setOnClickListener(v -> {
+            v.setVisibility(View.GONE);
+            start();
+        });
 
         dividerSecond = findViewById(R.id.divider_second);
         dividerThird = findViewById(R.id.divider_third);
@@ -81,21 +97,25 @@ public class SmoActivity extends AppCompatActivity {
         deviceUsableRecyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
 
         final Intent intent = getIntent();
-        final int countSources = intent.getIntExtra(COUNT_SOURCES_EXTRA, 10);
-        final int countDevices = intent.getIntExtra(COUNT_DEVICES_EXTRA, 2);
-        final int countRequests = intent.getIntExtra(COUNT_REQUESTS_EXTRA, 1000);
-        final int bufferCapacity = intent.getIntExtra(BUFFER_CAPACITY_EXTRA, 8);
-        final float lambda = intent.getFloatExtra(LAMBDA_EXTRA, 2f);
-        final float alpha = intent.getFloatExtra(ALPHA_EXTRA, 0.05f);
-        final float beta = intent.getFloatExtra(BETA_EXTRA, 0.15f);
-        final int step = intent.getIntExtra(STEP_EXTRA, 10);
-        Controller controller = new Controller(sourceAdapter, deviceAdapter, this);
-        controller.startSystem(countSources, countDevices, countRequests, bufferCapacity, step, lambda, alpha, beta);
+        countSources = intent.getIntExtra(COUNT_SOURCES_EXTRA, 12);
+        countDevices = intent.getIntExtra(COUNT_DEVICES_EXTRA, 2);
+        countRequests = intent.getIntExtra(COUNT_REQUESTS_EXTRA, 1000);
+        bufferCapacity = intent.getIntExtra(BUFFER_CAPACITY_EXTRA, 8);
+        lambda = intent.getFloatExtra(LAMBDA_EXTRA, 2.2f);
+        alpha = intent.getFloatExtra(ALPHA_EXTRA, 0.05f);
+        beta = intent.getFloatExtra(BETA_EXTRA, 0.1f);
+        deltaT = intent.getLongExtra(DELTA_T_EXTRA, 100);
+        controller = new Controller(sourceAdapter, deviceAdapter, this);
+    }
+
+    private void start() {
+        controller.startSystem(countSources, countDevices, countRequests, bufferCapacity, deltaT, lambda, alpha, beta);
     }
 
     public void showResult(int countSources, int countDevices, int bufferCapacity,
                            float lambda, float alpha, float beta, double probabilityRefusal,
                            double loadFactor, double timeInSystem, List<Device> devices, long tomeWorkingSystem) {
+        startTextView.setVisibility(View.VISIBLE);
         countSourcesTextView.setVisibility(View.VISIBLE);
         countSourcesTextView.setText(getString(R.string.count_sources_result, countSources));
         countDevicesTextView.setVisibility(View.VISIBLE);

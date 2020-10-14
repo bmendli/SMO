@@ -2,49 +2,63 @@ package ru.ok.technopolis.training.smo.source;
 
 import androidx.annotation.NonNull;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
 import ru.ok.technopolis.training.smo.controller.Controller;
 import ru.ok.technopolis.training.smo.request.Request;
 
-public class Source implements Runnable {
+public class Source {
 
     @NonNull
     private final Controller controller;
     private final float lambda;
     private final int sourceNumber;
-    private final AtomicInteger requestNumber = new AtomicInteger(0);
-    private final AtomicInteger countRefusedRequests = new AtomicInteger(0);
 
-    private boolean isSourceWorking;
+    private int countRefusedRequests;
+    private int requestNumber;
+    private long generateTimeLastRequest;
+    private long startGenerateTimeLastRequest;
+    private Request request;
 
     public Source(float lambda, int sourceNumber, @NonNull Controller controller) {
         this.lambda = lambda;
         this.sourceNumber = sourceNumber;
         this.controller = controller;
+        this.countRefusedRequests = 0;
+        this.requestNumber = 0;
+        startGenerateNewRequest();
     }
 
-    public void onSystemEndWorking() {
-        isSourceWorking = false;
+    public void startGenerateNewRequest() {
+        final long timeNow = System.currentTimeMillis();
+        if (requestNumber != 0) {
+            System.out.printf("generated requests %d.%d with time = %d\n", sourceNumber, requestNumber, timeNow - startGenerateTimeLastRequest);
+        }
+        startGenerateTimeLastRequest = timeNow;
+        final long time = generateTime();
+        generateTimeLastRequest = time + startGenerateTimeLastRequest;
     }
 
-    @Override
-    public void run() {
-        isSourceWorking = true;
-        while (isSourceWorking) {
-            try {
-                final long timeGeneration = generateDelayTime();
-                Thread.sleep(timeGeneration);
-                System.out.printf("generated %d.%d with time generation %d%n", sourceNumber, requestNumber.incrementAndGet(), timeGeneration);
-                controller.submitRequest(this, new Request(sourceNumber, requestNumber.get()), timeGeneration);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+    public void submitRequest() {
+        request = new Request(sourceNumber, requestNumber);
+        generateTimeLastRequest = 0;
+        requestNumber++;
+    }
+
+    public long getGenerateTimeLastRequest() {
+        return generateTimeLastRequest;
+    }
+
+    public void minusGenerateTimeLastRequest(long deltaT) {
+        if (generateTimeLastRequest != 0) {
+            generateTimeLastRequest -= deltaT;
         }
     }
 
+    public Request getRequest() {
+        return request;
+    }
+
     public void incrementRefusalRequests() {
-        countRefusedRequests.incrementAndGet();
+        countRefusedRequests++;
     }
 
     public int getSourceNumber() {
@@ -52,14 +66,14 @@ public class Source implements Runnable {
     }
 
     public int getRequestNumber() {
-        return requestNumber.get();
+        return requestNumber;
     }
 
     public int getCountRefusedRequests() {
-        return countRefusedRequests.get();
+        return countRefusedRequests;
     }
 
-    private long generateDelayTime() {
-        return (long) (- 1 / lambda * Math.log(Math.random()) * 1000);
+    private long generateTime() {
+        return (long) (-1 / lambda * Math.log(Math.random()) * 1000);
     }
 }

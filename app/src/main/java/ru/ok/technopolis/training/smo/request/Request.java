@@ -10,6 +10,8 @@ public class Request {
 
     private long startTimeInBuffer;
     private long endTimeInBuffer;
+    private long sumDeltaTBuffer = 0;
+    private long sumDeltaTDevice = 0;
 
     public Request(int sourceNumber, int requestNumber) {
         this.sourceNumber = sourceNumber;
@@ -39,6 +41,18 @@ public class Request {
 
     public long timeInBuffer() {
         return startTimeInBuffer > 0 && endTimeInBuffer >= 0 ? endTimeInBuffer - startTimeInBuffer : 0;
+    }
+
+    public void addDeltaTBuffer(long deltaT) {
+        sumDeltaTBuffer += deltaT;
+    }
+
+    public long getSumDeltaTBuffer() {
+        return sumDeltaTBuffer;
+    }
+
+    public long getSumDeltaTDevice() {
+        return sumDeltaTDevice;
     }
 
     @Override

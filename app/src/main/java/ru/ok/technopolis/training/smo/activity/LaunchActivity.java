@@ -19,7 +19,7 @@ public class LaunchActivity extends AppCompatActivity {
     private EditText lambdaEditText;
     private EditText alphaEditText;
     private EditText betaEditText;
-    private EditText stepEditText;
+    private EditText deltaTEditText;
     private TextView startTextView;
 
     @Override
@@ -33,7 +33,7 @@ public class LaunchActivity extends AppCompatActivity {
         lambdaEditText = findViewById(R.id.lambda);
         alphaEditText = findViewById(R.id.alpha);
         betaEditText = findViewById(R.id.beta);
-        stepEditText = findViewById(R.id.step);
+        deltaTEditText = findViewById(R.id.deltaT);
         startTextView = findViewById(R.id.start_tv);
         startTextView.setOnClickListener((v) -> {
             Intent intent = new Intent(this, SmoActivity.class);
@@ -65,9 +65,9 @@ public class LaunchActivity extends AppCompatActivity {
             if (!TextUtils.isEmpty(beta)) {
                 intent.putExtra(SmoActivity.BETA_EXTRA, Float.parseFloat(beta));
             }
-            final String step = stepEditText.getText().toString();
-            if (!TextUtils.isEmpty(step)) {
-                intent.putExtra(SmoActivity.STEP_EXTRA, Integer.parseInt(step));
+            final String deltaT = deltaTEditText.getText().toString();
+            if (!TextUtils.isEmpty(deltaT)) {
+                intent.putExtra(SmoActivity.DELTA_T_EXTRA, Long.parseLong(deltaT));
             }
             startActivity(intent);
         });
